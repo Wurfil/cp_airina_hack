@@ -24,7 +24,7 @@ export default defineNuxtConfig({
   css: ['@/assets/css/tailwind.css', '@/assets/css/main.css'],
   runtimeConfig: {
     public: {
-      baseURL: 'http://158.160.137.244:8081/api/v1',
+      baseURL: 'http://localhost:8080/api',
       headers: {},
     },
   },
