@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@mdi/js": "^7.4.47",
+    "@quasar/extras": "^1.16.11",
     "date-fns": "^3.6.0",
     "lodash.clonedeep": "^4.5.0",
     "lodash.debounce": "^4.0.8",
