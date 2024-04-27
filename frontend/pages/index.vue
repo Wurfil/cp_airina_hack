@@ -1,6 +1,6 @@
 <template>
   <NuxtLayout>
-
+    <chat/>
   </NuxtLayout>
 </template>
 
