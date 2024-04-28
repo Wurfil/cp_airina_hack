@@ -35,7 +35,7 @@
             <template v-slot:avatar>
               <img
                 class="q-message-avatar q-message-avatar--sent tw-mr-2"
-                src="~/assets/24884dd5-c6bc-4236-8d09-4646d6f36421.jfif"
+                src="~/assets/image_2024-04-11_12-23-05.png"
               >
             </template>
             <template #stamp>{{chat.date ? format(new Date(chat.date), 'HH:mm') : ''}}</template>
@@ -73,7 +73,7 @@
           <template v-slot:avatar>
             <img
               class="q-message-avatar q-message-avatar--sent tw-mr-2"
-              src="~/assets/24884dd5-c6bc-4236-8d09-4646d6f36421.jfif"
+              src="~/assets/image_2024-04-11_12-23-05.png"
             >
           </template>
           <div class="tw-py-1">
