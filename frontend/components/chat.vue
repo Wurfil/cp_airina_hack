@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <div v-if="chatTree.length" class="tw-bg-white tw-my-20 tw-mb-24 tw-flex tw-justify-between">
+      <div v-if="chatTree.length" class="tw-bg-white tw-mt-5 tw-mb-24 tw-flex tw-justify-between">
         <q-btn
           no-caps
           color="primary"
@@ -113,8 +113,8 @@
           </div>
         </div>
       </div>
-      <div v-else class="tw-text-xl ">
-        <q-input :disable="loading" @keydown.enter="sendMessage" rounded class="tw-bg-white tw-text-lg tw-fixed tw-w-[766px] tw-bottom-5 tw-z-10" outlined v-model="question" label="Спросите у ассистента">
+      <div v-else class="tw-text-xl tw-h-[100px] tw-py-5 tw-bg-white tw-fixed tw-w-[766px] tw-bottom-0">
+        <q-input :disable="loading" @keydown.enter="sendMessage" rounded class="tw-bg-white tw-text-lg tw-z-10" outlined v-model="question" label="Спросите у ассистента">
           <template #append>
             <q-icon
               class="hover:tw-cursor-pointer"
