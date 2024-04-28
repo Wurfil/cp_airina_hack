@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <div v-if="chatTree.length" class="tw-bg-white tw-mt-5 tw-mb-24 tw-flex tw-justify-between">
+      <div v-if="chatTree.length" class="tw-bg-white tw-z-10 tw-py-8 tw-flex tw-justify-between tw-h-[80px] tw-bg-white tw-fixed tw-w-[766px] tw-top-0">
         <q-btn
           no-caps
           color="primary"
