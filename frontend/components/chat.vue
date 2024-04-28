@@ -1,7 +1,20 @@
 <template>
   <div>
     <div>
-      <div class="tw-h-[20px] tw-bg-white" />
+      <div v-if="chatTree.length" class="tw-bg-white tw-z-10 tw-py-8 tw-flex tw-justify-between tw-h-[80px] tw-bg-white tw-fixed tw-w-[766px] tw-top-0">
+        <q-btn
+          no-caps
+          color="primary"
+          @click="chatTree = []"
+        >
+          Новый чат
+        </q-btn>
+        <q-toggle
+          v-model="isV2"
+          label="Версия чата 2"
+        />
+
+      </div>
       <div class="tw-mx-10 tw-pt-10 tw-mb-12">
         <div
           v-for="chat in chatTree"
@@ -22,7 +35,7 @@
             <template v-slot:avatar>
               <img
                 class="q-message-avatar q-message-avatar--sent tw-mr-2"
-                src="~/assets/24884dd5-c6bc-4236-8d09-4646d6f36421.jfif"
+                src="~/assets/image_2024-04-11_12-23-05.png"
               >
             </template>
             <template #stamp>{{chat.date ? format(new Date(chat.date), 'HH:mm') : ''}}</template>
@@ -60,7 +73,7 @@
           <template v-slot:avatar>
             <img
               class="q-message-avatar q-message-avatar--sent tw-mr-2"
-              src="~/assets/24884dd5-c6bc-4236-8d09-4646d6f36421.jfif"
+              src="~/assets/image_2024-04-11_12-23-05.png"
             >
           </template>
           <div class="tw-py-1">
@@ -100,8 +113,8 @@
           </div>
         </div>
       </div>
-      <div v-else class="tw-text-xl ">
-        <q-input :disable="loading" @keydown.enter="sendMessage" rounded class="tw-bg-white tw-text-lg tw-fixed tw-w-[766px] tw-bottom-5 tw-z-10" outlined v-model="question" label="Спросите у ассистента">
+      <div v-else class="tw-text-xl tw-h-[100px] tw-py-5 tw-bg-white tw-fixed tw-w-[766px] tw-bottom-0">
+        <q-input :disable="loading" @keydown.enter="sendMessage" rounded class="tw-bg-white tw-text-lg tw-z-10" outlined v-model="question" label="Спросите у ассистента">
           <template #append>
             <q-icon
               class="hover:tw-cursor-pointer"
@@ -120,11 +133,12 @@
 <script setup>
 import { mdiArrowRightBoldCircle } from '@mdi/js';
 import { format } from 'date-fns';
-import { getAnswer } from '~/shared/api/index.js';
+import { getAnswer, getAnswerV2 } from '~/shared/api/index.js';
 
 const chatTree = ref([]);
 const question = ref('');
 const loading = ref(false);
+const isV2 = ref(false);
 const chatHistory = [];
 async function sendMessage() {
   if (!loading.value) {
@@ -155,22 +169,38 @@ async function sendMessage() {
           }, 3000);
         });
       }
+      if (isV2.value) {
+        getAnswerV2(req, chatHistory).then((answer) => {
+          const responseMessage = {
+            role: 'assistant',
+            content: answer,
+            date: new Date(),
+          };
+          loading.value = false;
+
+          chatTree.value.push(responseMessage);
+          chatHistory.push(message);
+          chatHistory.push(responseMessage);
+          window.scrollTo(0, document.body.scrollHeight);
+        });
+      } else {
+        getAnswer(req, chatHistory).then((answer) => {
+          const responseMessage = {
+            role: 'assistant',
+            content: answer,
+            date: new Date(),
+          };
+          loading.value = false;
+
+          chatTree.value.push(responseMessage);
+          chatHistory.push(message);
+          chatHistory.push(responseMessage);
+          window.scrollTo(0, document.body.scrollHeight);
+        });
+      }
       await new Promise((resolve) => {
         setTimeout(() => {
           loading.value = true;
-          getAnswer(req, chatHistory).then((answer) => {
-            const responseMessage = {
-              role: 'assistant',
-              content: answer,
-              date: new Date(),
-            };
-            loading.value = false;
-
-            chatTree.value.push(responseMessage);
-            chatHistory.push(message);
-            chatHistory.push(responseMessage);
-            window.scrollTo(0, document.body.scrollHeight);
-          });
           resolve(true);
         }, 2000);
       });

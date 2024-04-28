@@ -24,7 +24,7 @@ export default defineNuxtConfig({
   css: ['@/assets/css/tailwind.css', '@/assets/css/main.css'],
   runtimeConfig: {
     public: {
-      baseURL: 'http://localhost:8080/api',
+      baseURL: 'https://e650-35-227-153-16.ngrok-free.app/api',
       headers: {},
     },
   },
