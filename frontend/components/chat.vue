@@ -1,7 +1,20 @@
 <template>
   <div>
     <div>
-      <div class="tw-h-[20px] tw-bg-white" />
+      <div v-if="chatTree.length" class="tw-bg-white tw-my-20 tw-mb-24 tw-flex tw-justify-between">
+        <q-btn
+          no-caps
+          color="primary"
+          @click="chatTree = []"
+        >
+          Новый чат
+        </q-btn>
+        <q-toggle
+          v-model="isV2"
+          label="Версия чата 2"
+        />
+
+      </div>
       <div class="tw-mx-10 tw-pt-10 tw-mb-12">
         <div
           v-for="chat in chatTree"
@@ -120,11 +133,12 @@
 <script setup>
 import { mdiArrowRightBoldCircle } from '@mdi/js';
 import { format } from 'date-fns';
-import { getAnswer } from '~/shared/api/index.js';
+import { getAnswer, getAnswerV2 } from '~/shared/api/index.js';
 
 const chatTree = ref([]);
 const question = ref('');
 const loading = ref(false);
+const isV2 = ref(false);
 const chatHistory = [];
 async function sendMessage() {
   if (!loading.value) {
@@ -155,22 +169,38 @@ async function sendMessage() {
           }, 3000);
         });
       }
+      if (isV2.value) {
+        getAnswerV2(req, chatHistory).then((answer) => {
+          const responseMessage = {
+            role: 'assistant',
+            content: answer,
+            date: new Date(),
+          };
+          loading.value = false;
+
+          chatTree.value.push(responseMessage);
+          chatHistory.push(message);
+          chatHistory.push(responseMessage);
+          window.scrollTo(0, document.body.scrollHeight);
+        });
+      } else {
+        getAnswer(req, chatHistory).then((answer) => {
+          const responseMessage = {
+            role: 'assistant',
+            content: answer,
+            date: new Date(),
+          };
+          loading.value = false;
+
+          chatTree.value.push(responseMessage);
+          chatHistory.push(message);
+          chatHistory.push(responseMessage);
+          window.scrollTo(0, document.body.scrollHeight);
+        });
+      }
       await new Promise((resolve) => {
         setTimeout(() => {
           loading.value = true;
-          getAnswer(req, chatHistory).then((answer) => {
-            const responseMessage = {
-              role: 'assistant',
-              content: answer,
-              date: new Date(),
-            };
-            loading.value = false;
-
-            chatTree.value.push(responseMessage);
-            chatHistory.push(message);
-            chatHistory.push(responseMessage);
-            window.scrollTo(0, document.body.scrollHeight);
-          });
           resolve(true);
         }, 2000);
       });
