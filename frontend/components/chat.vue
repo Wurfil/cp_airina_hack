@@ -2,7 +2,7 @@
   <div>
     <div>
       <div class="tw-h-[20px] tw-bg-white" />
-      <div class="tw-mx-10">
+      <div class="tw-mx-10 tw-pt-10 tw-mb-12">
         <div
           v-for="chat in chatTree"
           :key="chat"
@@ -119,7 +119,6 @@
 
 <script setup>
 import { mdiArrowRightBoldCircle } from '@mdi/js';
-import cloneDeep from 'lodash.clonedeep';
 import { format } from 'date-fns';
 import { getAnswer } from '~/shared/api/index.js';
 
@@ -136,6 +135,7 @@ async function sendMessage() {
         date: new Date(),
       };
       const req = question.value;
+      window.scrollTo(0, document.body.scrollHeight);
 
       question.value = '';
       chatTree.value.push(message);
@@ -146,7 +146,7 @@ async function sendMessage() {
           setTimeout(() => {
             const hello = {
               role: 'assistant',
-              content: 'Привет, меня зовут Рина. Сейчас я отвечу на ваш вопрос',
+              content: 'Здравствуйте! Меня зовут Рина. Сейчас я отвечу на ваш вопрос',
               date: new Date(),
             };
             chatTree.value.push(hello);
@@ -155,34 +155,32 @@ async function sendMessage() {
           }, 3000);
         });
       }
-
-      window.scrollTo(0, document.body.scrollHeight);
       await new Promise((resolve) => {
         setTimeout(() => {
           loading.value = true;
+          getAnswer(req, chatHistory).then((answer) => {
+            const responseMessage = {
+              role: 'assistant',
+              content: answer,
+              date: new Date(),
+            };
+            loading.value = false;
 
+            chatTree.value.push(responseMessage);
+            chatHistory.push(message);
+            chatHistory.push(responseMessage);
+            window.scrollTo(0, document.body.scrollHeight);
+          });
           resolve(true);
         }, 2000);
       });
 
-      // const answer = await getAnswer(req, chatHistory);
-
-      const answer = await new Promise((resolve) => {
-        setTimeout(() => {
-          const data = 'Ответ';
-          resolve(data);
-        }, 2000);
-      });
-      const responseMessage = {
-        role: 'assistant',
-        content: answer,
-        date: new Date(),
-      };
-      loading.value = false;
-
-      chatTree.value.push(responseMessage);
-      chatHistory.push(message);
-      chatHistory.push(responseMessage);
+      // const answer = await new Promise((resolve) => {
+      //   setTimeout(() => {
+      //     const data = 'Ответ';
+      //     resolve(data);
+      //   }, 2000);
+      // });
     } catch (error) {
       alert(`Join the waiting list if you want to use models: ${error}`);
     }
