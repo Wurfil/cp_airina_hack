@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+starlette
+pydantic
+pydantic-settings
+bitsandbytes
+accelerate
+torch
+transformers
