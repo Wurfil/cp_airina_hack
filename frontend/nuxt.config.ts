@@ -16,15 +16,15 @@ export default defineNuxtConfig({
 
     config: {
       brand: {
-        primary: '#9525c2',
-        secondary: '#f1f3f5',
+        primary: '#4289f5',
+        secondary: '#eaebed',
       },
     },
   },
   css: ['@/assets/css/tailwind.css', '@/assets/css/main.css'],
   runtimeConfig: {
     public: {
-      baseURL: 'https://e650-35-227-153-16.ngrok-free.app/api',
+      baseURL: 'http://10.0.24.81:8080/api/v1',
       headers: {},
     },
   },

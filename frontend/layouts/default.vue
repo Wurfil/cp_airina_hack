@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-w-[766px] tw-mx-auto tw-mt-20 tw-mb-40">
+  <div class="tw-w-[510px] tw-mx-auto tw-py-14">
     <slot />
   </div>
 </template>
